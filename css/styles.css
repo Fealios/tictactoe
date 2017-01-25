@@ -1,0 +1,45 @@
+body{
+  text-align: center;
+}
+
+#twoplayer {
+  /*border: solid;*/
+  width: 40%;
+  height: 40%;
+}
+
+#upperleft {
+  border-right: solid;
+  border-bottom: solid;
+}
+
+#uppermiddle {
+  border-right: solid;
+  border-bottom: solid;
+}
+
+#upperright {
+  border-bottom: solid;
+}
+
+#middleleft {
+  border-right: solid;
+  border-bottom: solid;
+}
+
+#middlecenter {
+  border-bottom: solid;
+  border-right: solid;
+}
+
+#middleright {
+  border-bottom: solid;
+}
+
+#bottomleft {
+  border-right: solid;
+}
+
+#bottommiddle {
+  border-right: solid;
+}

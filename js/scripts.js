@@ -36,7 +36,6 @@ function checkWinner(){
   }
 }
 
-
 function Board() {
   this.board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   this.counter = 0;
@@ -51,7 +50,6 @@ Board.prototype.iterate = function(){
   }
 }
 
-
 $(document).ready(function(){
   newGame = new Board();
 
@@ -59,6 +57,7 @@ $(document).ready(function(){
     $('div > span').text("");
     $('div > button').show();
     newGame = new Board();
+    winner = false;
     // console.log("hello")
   })
 //================================================
