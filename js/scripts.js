@@ -2,6 +2,10 @@ var newGame;
 var winner = false;
 var computer = false;
 
+function randomNum(){
+  return (Math.round(Math.random()*8));
+}
+
 function checkWinner(){
   switch (winner === false) {
     case (newGame.board[0] === newGame.board[1] && newGame.board[0] === newGame.board[2]):
@@ -51,6 +55,15 @@ Board.prototype.iterate = function(){
   }
 }
 
+Board.prototype.computerTurn = function(){
+  var computerSelect = randomNum();
+  if(this.board[computerSelect] !== "X" && this.board[computerSelect] !== "O"){
+    this.[computerSelect] = this.entry;
+    checkWinner();
+    this.counter++;
+  }
+}
+
 $(document).ready(function(){
   newGame = new Board();
 
@@ -71,12 +84,24 @@ $(document).ready(function(){
   })
 //================================================
   $('.space button').click(function() {
-    newGame.iterate();
-    $(this).hide();
-    $(this).next().text(newGame.entry);
-    var userEntry=$(this).val()
-    newGame.board[parseInt(userEntry)] = newGame.entry;
-    checkWinner();
-    newGame.counter++;
+    if(!computer){
+      newGame.iterate();
+      $(this).hide();
+      $(this).next().text(newGame.entry);
+      var userEntry=$(this).val();
+      newGame.board[parseInt(userEntry)] = newGame.entry;
+      checkWinner();
+      newGame.counter++;
+    }
+    else if(computer){
+      newGame.iterate();
+      $(this).hide();
+      $(this).next().text(newGame.entry);
+      var userEntry=$(this).val();
+      newGame.board[parseInt(userEntry)] = newGame.entry;
+      checkWinner();
+      newGame.counter++;
+      computerTurn();
+    }
   });
 })
