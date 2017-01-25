@@ -1,5 +1,6 @@
 var newGame;
 var winner = false;
+var computer = false;
 
 function checkWinner(){
   switch (winner === false) {
@@ -53,12 +54,20 @@ Board.prototype.iterate = function(){
 $(document).ready(function(){
   newGame = new Board();
 
-  $('#reset').click(function(){
+  $('#twoPlayerButton, #quit').click(function() {
+    $('#twoPlayer, .modeButton').toggleClass("hide");
+  });
+
+  $('#singlePlayerButton').click(function(){
+    computer = true;
+  })
+
+  $('#reset, #quit').click(function(){
     $('div > span').text("");
     $('div > button').show();
     newGame = new Board();
     winner = false;
-    // console.log("hello")
+    computer = false;
   })
 //================================================
   $('.space button').click(function() {
@@ -69,6 +78,5 @@ $(document).ready(function(){
     newGame.board[parseInt(userEntry)] = newGame.entry;
     checkWinner();
     newGame.counter++;
-
   });
 })

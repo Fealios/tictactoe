@@ -2,10 +2,15 @@ body{
   text-align: center;
 }
 
-#twoplayer {
+.hide {
+  display: none;
+}
+
+#twoPlayer {
   /*border: solid;*/
   width: 40%;
   height: 40%;
+
 }
 
 #upperleft {
