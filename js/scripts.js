@@ -2,7 +2,6 @@ var newGame;
 var winner = false;
 var computer = false;
 var hard = false;
-var humanOrMachine = "";
 
 function randomNum(){
   var random = (Math.round(Math.random()*8));
@@ -12,45 +11,45 @@ function randomNum(){
   return random;
 }
 
-function checkWinner(array){
-  switch (winner === false) {
+function checkWinner(array, futureCounter){
+  var localWin = false;
+  switch (localWin === false) {
     case (array[0] === array[1] && array[0] === array[2]):
-    winner = true;
+    localWin = true;
     break;
     case (array[3] === array[4] && array[3] === array[5]):
-    winner = true;
+    localWin = true;
     break;
     case (array[6] === array[7] && array[6] === array[8]):
-    winner = true;
+    localWin = true;
     break;
     case (array[0] === array[3] && array[0] === array[6]):
-    winner = true;
+    localWin = true;
     break;
     case (array[1] === array[4] && array[1] === array[7]):
-    winner = true;
+    localWin = true;
     break;
     case (array[2] === array[5] && array[2] === array[8]):
-    winner = true;
+    localWin = true;
     break;
     case (array[0] === array[4] && array[0] === array[8]):
-    winner = true;
+    localWin = true;
     break;
     case (array[2] === array[4] && array[2] === array[6]):
-    winner = true;
+    localWin = true;
     break;
   }
 
-  if(winner){
-    if(newGame.counter%2===0){
-      humanOrMachine = "human";
-      console.log(humanOrMachine)
+  if(computer){
+    if (localWin && futureCounter % 2 === 0) {
+      return "Human Win";
+    } else if (localWin && futureCounter % 2 === 1) {
+      return "Computer Win";
     } else {
-      humanOrMachine = "computer";
-      console.log(humanOrMachine);
+      return "No Winner Yet"
     }
-    alert('someone won');
-  } else if (newGame.counter === 8 && !winner){
-    alert('no one won, restart the game');
+  } else if(localWin) {
+    return "You win!";
   }
 }
 
@@ -60,6 +59,7 @@ function Board() {
   this.entry = "X";
   this.moves = [];
   this.computerSelect = '';
+  this.computerWin = false;
 }
 
 Board.prototype.iterate = function(){
@@ -76,7 +76,10 @@ Board.prototype.easyComputerTurn = function(){
   this.board[this.computerSelect] = this.entry
   console.log(this.computerSelect)
   this.moves.push(this.computerSelect);
-  checkWinner(this.board);
+  if (checkWinner(this.board, this.counter) === "Computer Win") {
+    winner = true;
+    alert('Damn, son. You suck.')
+  }
   this.counter++;
 }
 
@@ -84,11 +87,11 @@ Board.prototype.easyComputerTurn = function(){
 
 Board.prototype.hardComputerTurn = function() {
   this.iterate();
-  
+
 }
 
-function score() {
-  if (checkWinner()) {
+function score(futureMoves) {
+  if (checkWinner(futureMoves)) {
     return 10;
   }
 }
@@ -125,7 +128,13 @@ $(document).ready(function(){
     var movePosition = parseInt($(this).val());
     newGame.board[movePosition] = newGame.entry;
     newGame.moves.push(movePosition);
-    checkWinner(newGame.board);
+    if(checkWinner(newGame.board, newGame.counter) === "Human Win"){
+      winner = true;
+      alert('You have conquered the robots!');
+    } else if(checkWinner(newGame.board, newGame.counter) === "You win!"){
+      winner = true;
+      alert('You win!');
+    }
     newGame.counter++;//end of player
 
     if(!computer){
