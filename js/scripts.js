@@ -46,7 +46,7 @@ function checkWinner(array, futureCounter){
     } else if (localWin && futureCounter % 2 === 1) {
       return "Computer Win";
     } else {
-      return "No Winner Yet"
+      return "No Winner Yet";
     }
   } else if(localWin) {
     return "You win!";
@@ -90,12 +90,20 @@ Board.prototype.hardComputerTurn = function() {
 
 }
 
-function score(futureMoves) {
-  if (checkWinner(futureMoves)) {
+function score(futureMoves, dummyCount) {
+  if (checkWinner(futureMoves, dummyCount) === "Computer Win") {
     return 10;
+  } else if(checkWinner(futureMoves, dummyCount) === "Human Win") {
+    return -10;
+  } else {
+    return 0;
   }
 }
 
+function minimax(moves, count) {
+  if (checkWinner(moves, count) === "Human Win" || checkWinner(moves, count) === "Computer Win")
+    return score(moves, count)
+}
 
 // END COMPUTER HARD MODE =============================
 
