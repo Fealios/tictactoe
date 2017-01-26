@@ -1,6 +1,8 @@
 var newGame;
 var winner = false;
 var computer = false;
+var hard = false;
+var humanOrMachine = "";
 
 function randomNum(){
   var random = (Math.round(Math.random()*8));
@@ -10,35 +12,42 @@ function randomNum(){
   return random;
 }
 
-function checkWinner(){
+function checkWinner(array){
   switch (winner === false) {
-    case (newGame.board[0] === newGame.board[1] && newGame.board[0] === newGame.board[2]):
+    case (array[0] === array[1] && array[0] === array[2]):
     winner = true;
     break;
-    case (newGame.board[3] === newGame.board[4] && newGame.board[3] === newGame.board[5]):
+    case (array[3] === array[4] && array[3] === array[5]):
     winner = true;
     break;
-    case (newGame.board[6] === newGame.board[7] && newGame.board[6] === newGame.board[8]):
+    case (array[6] === array[7] && array[6] === array[8]):
     winner = true;
     break;
-    case (newGame.board[0] === newGame.board[3] && newGame.board[0] === newGame.board[6]):
+    case (array[0] === array[3] && array[0] === array[6]):
     winner = true;
     break;
-    case (newGame.board[1] === newGame.board[4] && newGame.board[1] === newGame.board[7]):
+    case (array[1] === array[4] && array[1] === array[7]):
     winner = true;
     break;
-    case (newGame.board[2] === newGame.board[5] && newGame.board[2] === newGame.board[8]):
+    case (array[2] === array[5] && array[2] === array[8]):
     winner = true;
     break;
-    case (newGame.board[0] === newGame.board[4] && newGame.board[0] === newGame.board[8]):
+    case (array[0] === array[4] && array[0] === array[8]):
     winner = true;
     break;
-    case (newGame.board[2] === newGame.board[4] && newGame.board[2] === newGame.board[6]):
+    case (array[2] === array[4] && array[2] === array[6]):
     winner = true;
     break;
   }
 
   if(winner){
+    if(newGame.counter%2===0){
+      humanOrMachine = "human";
+      console.log(humanOrMachine)
+    } else {
+      humanOrMachine = "computer";
+      console.log(humanOrMachine);
+    }
     alert('someone won');
   } else if (newGame.counter === 8 && !winner){
     alert('no one won, restart the game');
@@ -61,16 +70,33 @@ Board.prototype.iterate = function(){
   }
 }
 
-Board.prototype.computerTurn = function(){
+Board.prototype.easyComputerTurn = function(){
   this.iterate();
   this.computerSelect = randomNum();
   this.board[this.computerSelect] = this.entry
   console.log(this.computerSelect)
   this.moves.push(this.computerSelect);
-  checkWinner();
+  checkWinner(this.board);
   this.counter++;
 }
 
+// COMPUTER HARD MODE ===============================
+
+Board.prototype.hardComputerTurn = function() {
+  this.iterate();
+  
+}
+
+function score() {
+  if (checkWinner()) {
+    return 10;
+  }
+}
+
+
+// END COMPUTER HARD MODE =============================
+
+// begin user logic
 $(document).ready(function(){
   newGame = new Board();
 
@@ -99,17 +125,25 @@ $(document).ready(function(){
     var movePosition = parseInt($(this).val());
     newGame.board[movePosition] = newGame.entry;
     newGame.moves.push(movePosition);
-    checkWinner();
+    checkWinner(newGame.board);
     newGame.counter++;//end of player
 
     if(!computer){
       console.log('you are playing against a human');
     }
     else if(computer){
-      console.log('you are playing against a machine');
-      newGame.computerTurn();
-      $('#' + newGame.computerSelect).hide();
-      $('#' + newGame.computerSelect).next().text(newGame.entry);
+      if(!winner){ // checks if there is a winner so computer doesnt go after a victory
+        if(!hard){ // random AI turns
+          console.log('you are playing against a machine');
+          newGame.easyComputerTurn();
+          $('#' + newGame.computerSelect).hide();
+          $('#' + newGame.computerSelect).next().text(newGame.entry);
+        } else { // intelligent AI turns
+          newGame.hardComputerTurn();
+          $('#' + newGame.computerSelect).hide();
+          $('#' + newGame.computerSelect).next().text(newGame.entry);
+        }
+      }
     }
   });
 })
